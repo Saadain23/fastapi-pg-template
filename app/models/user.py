@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, Boolean, DateTime
+from sqlalchemy.orm import relationship
 from app.db.base import Base
 from datetime import datetime
 
@@ -12,4 +13,6 @@ class User(Base):
     is_superuser = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.now)
     updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)
+
+    templates = relationship("Template", back_populates="user")
     

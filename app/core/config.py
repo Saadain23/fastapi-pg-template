@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     DATABASE_URL: str = str(os.getenv("DATABASE_URL"))
     SECRET_KEY: str = str(os.getenv("SECRET_KEY"))
     JWT_ALGO: str = str(os.getenv("ALGORITHM"))
+    ALGORITHM: str = str(os.getenv("ALGORITHM"))
     ACCESS_TOKEN_EXPIRE_MINUTES: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30"))
 
 settings = Settings()

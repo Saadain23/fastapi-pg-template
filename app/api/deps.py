@@ -15,7 +15,7 @@ def get_db() -> Generator:
         db.close()
 
 def get_current_user(db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)) -> User:
-    from app.schemas.token import TokenData
+    from app.schemas.token import Token
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -26,10 +26,13 @@ def get_current_user(db: Session = Depends(get_db), token: str = Depends(oauth2_
         username: str = payload.get("sub")
         if username is None:
             raise credentials_exception
-        token_data = TokenData(username=username)
+        token_data = Token(
+            access_token=token,
+            token_type="bearer",
+        )
     except JWTError:
         raise credentials_exception
-    user = db.query(User).filter(User.email == token_data.username).first()
+    user = db.query(User).filter(User.email == username).first()
     if user is None:
         raise credentials_exception
     if not user.is_active:
